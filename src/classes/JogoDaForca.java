@@ -18,18 +18,20 @@ public class JogoDaForca {
     private Character[] palavra2;
     private int tentativas, erros;
     private List<Character> letrasUsadas;
-    private Object[] dicas;
+    private List<String> dicas;
+    private ReadHttpRequest httpRequest;
 
-    public JogoDaForca() throws NullPointerException {
+    public JogoDaForca() throws NullPointerException{
         this.letrasUsadas = new ArrayList<>();
         this.palavra = Normalizer.normalize(lerPalavras(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         this.tentativas = 0;
         this.erros = 0;
         this.palavra2 = new Character[(palavra.length())];
+        this.httpRequest = new ReadHttpRequest();
         this.dicas = createDicas();
     }
 
-    public Object[] getDicas() {
+    public List<String> getDicas() {
         return dicas;
     }
 
@@ -101,7 +103,6 @@ public class JogoDaForca {
 
     public boolean letraExisteNaPalavra(char x) {
         boolean resultado = false;
-        //char[] arrayDaPalavra = palavra.toCharArray();
         for (int i = 0; i < palavra.length(); i++) {
             if (palavra.charAt(i) == x) {
                 return true;
@@ -113,7 +114,7 @@ public class JogoDaForca {
 
     public String getLetrasUsadas() {
         StringBuilder reString = new StringBuilder();
-        for (int i = 0; i < letrasUsadas.toArray().length; i++) {
+        for (int i = 0; i < letrasUsadas.size(); i++) {
             reString.append(letrasUsadas.toArray()[i]).append(" - ");
         }
         return reString.toString();
@@ -131,12 +132,7 @@ public class JogoDaForca {
         return false;
     }
 
-    private Object[] createDicas() {
-        if (ReadHttpRequest.failedAtCrawlPage == true) {
-            Object[] obj = new Object[1];
-            obj[0] = "Falha a conectar ao serviço de dicas.";
-            return obj;
-        }
-        return ReadHttpRequest.crawlPage(palavra);
+    private List<String> createDicas() {
+        return httpRequest.failedAtCrawlPage() ? null : httpRequest.crawlPage(palavra);
     }
 }

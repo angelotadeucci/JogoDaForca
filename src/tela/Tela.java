@@ -1,12 +1,8 @@
 package tela;
 
 import classes.JogoDaForca;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -17,7 +13,6 @@ import javax.swing.JOptionPane;
 public class Tela extends javax.swing.JFrame {
 
     private JogoDaForca forca;
-    private List<String> dicasUsadas = new ArrayList<>();
 
     public Tela() {
         initComponents();
@@ -134,18 +129,18 @@ public class Tela extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLLetrasUsadas)
-                            .addComponent(jLPalpite)
-                            .addComponent(jLErros))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLPalavra)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLPalavra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLDica)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLDicaString)
-                        .addGap(176, 176, 176))))
+                        .addComponent(jLDicaString, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLLetrasUsadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLErros)
+                            .addComponent(jLPalpite, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,7 +233,6 @@ public class Tela extends javax.swing.JFrame {
         if (!jLogotipo.isEnabled()) {
             return;
         }
-        System.err.println(forca.getPalavra());
         String input = JOptionPane.showInputDialog(this, "Digite uma letra", "Letra", 1);
         if (input == null) {
             return;
@@ -267,19 +261,7 @@ public class Tela extends javax.swing.JFrame {
                     forca.addPalavra2(i, letra);
                 }
             }
-            Character[] arrayDaPalavra2 = forca.getPalavra2();
-            String temp2 = "";
-            for (int i = 0; i < arrayDaPalavra2.length; i++) {
-                if (arrayDaPalavra2[i] == null) {
-                    temp2 += "_ ";
-                } else if (arrayDaPalavra2[i].toString() == " ") {
-                    temp2 += "  ";
-                } else if (arrayDaPalavra2[i].toString() == "-") {
-                    temp2 += "- ";
-                } else {
-                    temp2 += arrayDaPalavra2[i];
-                }
-            }
+            String temp2 = imprimePalavra();
             jLPalavra.setText(temp2);
             jLPalpite.setText(letra + " (Correto)");
             if (temp2.matches(forca.getPalavra())) {
@@ -317,17 +299,20 @@ public class Tela extends javax.swing.JFrame {
         if (input > 1) {
             return;
         }
-        Random rng = new Random();
-        Object[] dicas = forca.getDicas();
-        int x = rng.nextInt(dicas.length);
-        for (int i = 0; i < dicas.length; i++) {
-            if (i == x && !dicasUsadas.contains(dicas[i].toString())) {
-                dicasUsadas.add(0, dicas[i].toString());
-            }
-        }
         jLDica.setVisible(true);
         jLDicaString.setVisible(true);
-        jLDicaString.setText(dicasUsadas.get(0));
+        Random rng = new Random();
+        List<String> dicas = forca.getDicas();
+        if (dicas == null) {
+            jLDicaString.setText("Falha a conectar ao serviço de dicas.");
+        } else {
+            int x = rng.nextInt(dicas.size());
+            for (int i = 0; i < dicas.size(); i++) {
+                if (i == x) {
+                    jLDicaString.setText(dicas.get(i));
+                }
+            }
+        }
         forca.setTentativa(0);
         JMIAjuda.setEnabled(false);
     }//GEN-LAST:event_JMIAjudaActionPerformed
@@ -407,11 +392,24 @@ public class Tela extends javax.swing.JFrame {
         jLPalpite.setText(null);
         jLImagem.setIcon(icon);
         jLogotipo.setEnabled(true);
-        String temp = "";
-        for (int i = 0; i < forca.getPalavra().length(); i++) {
-            temp += "_ ";
-        }
-        jLPalavra.setText(temp);
+        jLPalavra.setText(imprimePalavra());
         JMIAjuda.setEnabled(false);
+    }
+
+    private String imprimePalavra() {
+        Character[] arrayDaPalavra2 = forca.getPalavra2();
+        String temp2 = "";
+        for (int i = 0; i < arrayDaPalavra2.length; i++) {
+            if (arrayDaPalavra2[i] == null) {
+                temp2 += "_ ";
+            } else if (arrayDaPalavra2[i].toString() == " ") {
+                temp2 += "  ";
+            } else if (arrayDaPalavra2[i].toString() == "-") {
+                temp2 += "- ";
+            } else {
+                temp2 += arrayDaPalavra2[i];
+            }
+        }
+        return temp2;
     }
 }

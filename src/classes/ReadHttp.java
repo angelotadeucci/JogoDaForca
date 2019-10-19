@@ -13,11 +13,11 @@ import java.util.Scanner;
 /**
  * @author angel / Simon (MoopleDEV Ragezone?)
  */
-public class ReadHttpRequest {
+public class ReadHttp {
 
     public boolean failedAtCrawlPage;
 
-    public ReadHttpRequest() {
+    public ReadHttp() {
         this.failedAtCrawlPage = false;
     }
 

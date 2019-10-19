@@ -19,7 +19,7 @@ public class JogoDaForca {
     private int tentativas, erros;
     private List<Character> letrasUsadas;
     private List<String> dicas;
-    private ReadHttpRequest httpRequest;
+    private ReadHttp httpRequest;
 
     public JogoDaForca() throws NullPointerException{
         this.letrasUsadas = new ArrayList<>();
@@ -27,7 +27,7 @@ public class JogoDaForca {
         this.tentativas = 0;
         this.erros = 0;
         this.palavra2 = new Character[(palavra.length())];
-        this.httpRequest = new ReadHttpRequest();
+        this.httpRequest = new ReadHttp();
         this.dicas = createDicas();
     }
 

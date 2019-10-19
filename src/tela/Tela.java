@@ -303,8 +303,8 @@ public class Tela extends javax.swing.JFrame {
         jLDicaString.setVisible(true);
         Random rng = new Random();
         List<String> dicas = forca.getDicas();
-        if (dicas == null) {
-            jLDicaString.setText("Falha a conectar ao serviço de dicas.");
+        if (dicas.isEmpty()) {
+            jLDicaString.setText("Falha ao prover dicas.");
         } else {
             int x = rng.nextInt(dicas.size());
             for (int i = 0; i < dicas.size(); i++) {

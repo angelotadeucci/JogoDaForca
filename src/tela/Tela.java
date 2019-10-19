@@ -1,6 +1,9 @@
 package tela;
 
 import classes.JogoDaForca;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -11,6 +14,7 @@ import javax.swing.JOptionPane;
 public class Tela extends javax.swing.JFrame {
 
     private JogoDaForca forca;
+    private List<String> dicasUsadas = new ArrayList<>();
 
     public Tela() {
         initComponents();
@@ -44,6 +48,7 @@ public class Tela extends javax.swing.JFrame {
         jMINovoJogo = new javax.swing.JMenuItem();
         jMISair = new javax.swing.JMenuItem();
         jMAjuda = new javax.swing.JMenu();
+        JMIAjuda = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -184,11 +189,15 @@ public class Tela extends javax.swing.JFrame {
         jMenuBar1.add(jMJogo);
 
         jMAjuda.setText("Ajuda");
-        jMAjuda.addActionListener(new java.awt.event.ActionListener() {
+
+        JMIAjuda.setText("Solicitar ajuda");
+        JMIAjuda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMAjudaActionPerformed(evt);
+                JMIAjudaActionPerformed(evt);
             }
         });
+        jMAjuda.add(JMIAjuda);
+
         jMenuBar1.add(jMAjuda);
 
         setJMenuBar(jMenuBar1);
@@ -264,11 +273,15 @@ public class Tela extends javax.swing.JFrame {
                 } else if (arrayDaPalavra2[i].toString() == "-") {
                     temp2 += "- ";
                 } else {
-                    temp2 += arrayDaPalavra2[i] + " ";
+                    temp2 += arrayDaPalavra2[i];
                 }
             }
             jLPalavra.setText(temp2);
             jLPalpite.setText(letra + " (Correto)");
+            if (temp2.matches(forca.getPalavra())) {
+                JOptionPane.showMessageDialog(this, "Acertou a palavra!","Winner winner chicken dinner",0);
+                jLogotipo.setEnabled(false);
+            }
         } else {
             forca.addErro();
             Icon icon = new ImageIcon(getClass().getClassLoader().getResource("imagens/forca" + (forca.getErros() + 1) + ".jpg"));
@@ -279,13 +292,12 @@ public class Tela extends javax.swing.JFrame {
         if (forca.getErros() == 6) {
             JOptionPane.showMessageDialog(this, "Você perdeu!\nA palavra era: " + forca.getPalavra(), "Game over", 0);
             jLogotipo.setEnabled(false);
-           // return;
+            // return;
         }
-//        forca.addTentativa();
-//        if (forca.getTentativas() > 6) {
-//            JOptionPane.showMessageDialog(this, "Você perdeu!", "Game over", 0);
-//            jLogotipo.setEnabled(false);
-//        }
+        forca.addTentativa();
+        if (forca.getTentativas() >= 2) {
+            JMIAjuda.setEnabled(true);
+        }
     }//GEN-LAST:event_jLogotipoMouseClicked
 
     private void jMINovoJogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMINovoJogoActionPerformed
@@ -296,9 +308,26 @@ public class Tela extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jMISairActionPerformed
 
-    private void jMAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMAjudaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMAjudaActionPerformed
+    private void JMIAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMIAjudaActionPerformed
+        int input = JOptionPane.showConfirmDialog(this, "Confirmar ajuda?\nVocê não poderá pedir ajuda novamente pelas próximas duas tentantivas.", "Ajuda ", 1);
+        if (input > 1) {
+            return;
+        }
+        Random rng = new Random();
+        Object[] dicas = forca.getDicas();
+        int x = rng.nextInt(dicas.length);
+        for (int i = 0; i < dicas.length; i++) {
+            if (i == x && !dicasUsadas.contains(dicas[i].toString())) {
+                dicasUsadas.add(0, dicas[i].toString());
+            }
+        }
+        jLDica.setVisible(true);
+        jLDicaString.setVisible(true);
+        jLDicaString.setText(dicasUsadas.get(0));
+        forca.setTentativa(0);
+        JMIAjuda.setEnabled(false);
+
+    }//GEN-LAST:event_JMIAjudaActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -334,6 +363,7 @@ public class Tela extends javax.swing.JFrame {
     //<editor-fold defaultstate="collapsed" desc="Variables">
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem JMIAjuda;
     private javax.swing.JLabel jLDica;
     private javax.swing.JLabel jLDicaString;
     private javax.swing.JLabel jLErros;
@@ -379,5 +409,6 @@ public class Tela extends javax.swing.JFrame {
             temp += "_ ";
         }
         jLPalavra.setText(temp);
+        JMIAjuda.setEnabled(false);
     }
 }

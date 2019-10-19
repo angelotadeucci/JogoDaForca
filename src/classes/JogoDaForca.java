@@ -18,6 +18,7 @@ public class JogoDaForca {
     private Character[] palavra2;
     private int tentativas, erros;
     private List<Character> letrasUsadas;
+    private Object[] dicas;
 
     public JogoDaForca() throws NullPointerException {
         this.letrasUsadas = new ArrayList<>();
@@ -25,6 +26,11 @@ public class JogoDaForca {
         this.tentativas = 0;
         this.erros = 0;
         this.palavra2 = new Character[(palavra.length())];
+        this.dicas = createDicas();
+    }
+
+    public Object[] getDicas() {
+        return dicas;
     }
 
     public int getErros() {
@@ -105,9 +111,6 @@ public class JogoDaForca {
         return resultado;
     }
 
-//    public char[] charArrayDaPalavra() {
-//        return palavra.toCharArray();
-//    }
     public String getLetrasUsadas() {
         StringBuilder reString = new StringBuilder();
         for (int i = 0; i < letrasUsadas.toArray().length; i++) {
@@ -126,6 +129,10 @@ public class JogoDaForca {
             return true;
         }
         return false;
+    }
+
+    private Object[] createDicas() {
+        return ReadHttpRequest.crawlPage(palavra);
     }
 
 }

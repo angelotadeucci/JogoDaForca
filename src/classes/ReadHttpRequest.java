@@ -2,11 +2,11 @@ package classes;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,19 +15,22 @@ import java.util.Scanner;
  * @author angel
  */
 public class ReadHttpRequest {
+    
+    public static boolean failedAtCrawlPage;
 
     public static Object[] crawlPage(String palavra) { //recursive method
         List<String> palavras = new ArrayList<>();
+        failedAtCrawlPage = false;
+        long timeToTake = System.currentTimeMillis();
         try {
             URL url = new URL("https://www.sinonimos.com.br/" + palavra);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setReadTimeout(5000);
-            con.setConnectTimeout(5000);
+            con.setReadTimeout(10000);
+            con.setConnectTimeout(10000);
             con.setRequestProperty("Content-Language", "pt-BR");
             con.setRequestMethod("GET");
             con.setDoOutput(true);
 
-            StringBuilder content;
             try (BufferedReader input = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
                 Scanner s = new Scanner(input);
                 String temp_data = "";
@@ -43,12 +46,15 @@ public class ReadHttpRequest {
             } finally {
                 con.disconnect();
             }
-
         } catch (MalformedURLException mue) {
             System.out.println("Error parsing URL:");
+            failedAtCrawlPage = true;
         } catch (IOException ioe) {
             System.out.println("Error reading from URL: " + ioe.getLocalizedMessage());
+            failedAtCrawlPage = true;
         }
+        System.out.println("Dicas carregadas em " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " segundos");
+        
         return palavras.toArray();
     }
 

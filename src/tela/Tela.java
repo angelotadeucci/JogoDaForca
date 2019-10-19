@@ -4,6 +4,9 @@ import classes.JogoDaForca;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -235,6 +238,7 @@ public class Tela extends javax.swing.JFrame {
         if (!jLogotipo.isEnabled()) {
             return;
         }
+        System.err.println(forca.getPalavra());
         String input = JOptionPane.showInputDialog(this, "Digite uma letra", "Letra", 1);
         if (input == null) {
             return;
@@ -279,8 +283,8 @@ public class Tela extends javax.swing.JFrame {
             jLPalavra.setText(temp2);
             jLPalpite.setText(letra + " (Correto)");
             if (temp2.matches(forca.getPalavra())) {
-                JOptionPane.showMessageDialog(this, "Acertou a palavra!","Winner winner chicken dinner",0);
                 jLogotipo.setEnabled(false);
+                JOptionPane.showMessageDialog(this, "Acertou a palavra!", "Winner winner chicken dinner", 0);
             }
         } else {
             forca.addErro();
@@ -289,14 +293,14 @@ public class Tela extends javax.swing.JFrame {
             jLPalpite.setText(letra + " (Errado)");
         }
         jLErros.setText("" + (-forca.getErros() + 6));
-        if (forca.getErros() == 6) {
-            JOptionPane.showMessageDialog(this, "Você perdeu!\nA palavra era: " + forca.getPalavra(), "Game over", 0);
-            jLogotipo.setEnabled(false);
-            // return;
-        }
         forca.addTentativa();
         if (forca.getTentativas() >= 2) {
             JMIAjuda.setEnabled(true);
+        }
+        if (forca.getErros() == 6) {
+            jLogotipo.setEnabled(false);
+            jMAjuda.setEnabled(false);
+            JOptionPane.showMessageDialog(this, "Você perdeu!\nA palavra era: " + forca.getPalavra(), "Game over", 0);
         }
     }//GEN-LAST:event_jLogotipoMouseClicked
 
@@ -326,7 +330,6 @@ public class Tela extends javax.swing.JFrame {
         jLDicaString.setText(dicasUsadas.get(0));
         forca.setTentativa(0);
         JMIAjuda.setEnabled(false);
-
     }//GEN-LAST:event_JMIAjudaActionPerformed
 
     public static void main(String args[]) {

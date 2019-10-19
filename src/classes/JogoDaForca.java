@@ -132,7 +132,11 @@ public class JogoDaForca {
     }
 
     private Object[] createDicas() {
+        if (ReadHttpRequest.failedAtCrawlPage == true) {
+            Object[] obj = new Object[1];
+            obj[0] = "Falha a conectar ao serviço de dicas.";
+            return obj;
+        }
         return ReadHttpRequest.crawlPage(palavra);
     }
-
 }

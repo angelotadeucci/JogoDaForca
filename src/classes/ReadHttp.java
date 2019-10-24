@@ -55,7 +55,7 @@ public class ReadHttp {
                 con.disconnect();
             }
         } catch (MalformedURLException mue) {
-            System.out.println("Error parsing URL:");
+            System.out.println("Error parsing URL:" + mue.getLocalizedMessage());
             failedAtCrawlPage = true;
         } catch (IOException ioe) {
             System.out.println("Error reading from URL: " + ioe.getLocalizedMessage());

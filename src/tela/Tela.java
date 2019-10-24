@@ -26,6 +26,12 @@ public class Tela extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDDica = new javax.swing.JDialog();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jBDicaSim = new javax.swing.JButton();
+        jBDicaNao = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLImagem = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -47,6 +53,62 @@ public class Tela extends javax.swing.JFrame {
         jMISair = new javax.swing.JMenuItem();
         jMAjuda = new javax.swing.JMenu();
         JMIAjuda = new javax.swing.JMenuItem();
+
+        jLabel1.setText("Confirmar ajuda?");
+
+        jLabel6.setText("Você não poderá pedir ajuda novamente"); // NOI18N
+
+        jBDicaSim.setText("Sim");
+        jBDicaSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBDicaSimActionPerformed(evt);
+            }
+        });
+
+        jBDicaNao.setText("Não");
+        jBDicaNao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBDicaNaoActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("pelas próximas duas tentativas.");
+
+        javax.swing.GroupLayout jDDicaLayout = new javax.swing.GroupLayout(jDDica.getContentPane());
+        jDDica.getContentPane().setLayout(jDDicaLayout);
+        jDDicaLayout.setHorizontalGroup(
+            jDDicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDDicaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jDDicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jDDicaLayout.createSequentialGroup()
+                        .addGroup(jDDicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jDDicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel6))
+                            .addComponent(jLabel7))
+                        .addGap(66, 66, 66))
+                    .addGroup(jDDicaLayout.createSequentialGroup()
+                        .addComponent(jBDicaSim)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jBDicaNao)
+                        .addGap(83, 83, 83))))
+        );
+        jDDicaLayout.setVerticalGroup(
+            jDDicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDDicaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jDDicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBDicaSim)
+                    .addComponent(jBDicaNao))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -296,10 +358,14 @@ public class Tela extends javax.swing.JFrame {
     }//GEN-LAST:event_jMISairActionPerformed
 
     private void JMIAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMIAjudaActionPerformed
-        int input = JOptionPane.showConfirmDialog(this, "Confirmar ajuda?\nVocê não poderá pedir ajuda novamente pelas próximas duas tentantivas.", "Ajuda ", 1);
-        if (input > 1) {
-            return;
-        }
+        jDDica.setResizable(false);
+        jDDica.setTitle("Dica");
+        jDDica.setSize(220, 130);
+        jDDica.setLocationRelativeTo(null);
+        jDDica.setVisible(true);
+    }//GEN-LAST:event_JMIAjudaActionPerformed
+
+    private void jBDicaSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDicaSimActionPerformed
         jLDica.setVisible(true);
         jLDicaString.setVisible(true);
         Random rng = new Random();
@@ -323,7 +389,12 @@ public class Tela extends javax.swing.JFrame {
         }
         forca.setTentativa(0);
         JMIAjuda.setEnabled(false);
-    }//GEN-LAST:event_JMIAjudaActionPerformed
+        jDDica.setVisible(false);
+    }//GEN-LAST:event_jBDicaSimActionPerformed
+
+    private void jBDicaNaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDicaNaoActionPerformed
+        jDDica.setVisible(false);
+    }//GEN-LAST:event_jBDicaNaoActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -360,6 +431,9 @@ public class Tela extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem JMIAjuda;
+    private javax.swing.JButton jBDicaNao;
+    private javax.swing.JButton jBDicaSim;
+    private javax.swing.JDialog jDDica;
     private javax.swing.JLabel jLDica;
     private javax.swing.JLabel jLDicaString;
     private javax.swing.JLabel jLErros;
@@ -367,10 +441,13 @@ public class Tela extends javax.swing.JFrame {
     private javax.swing.JLabel jLLetrasUsadas;
     private javax.swing.JLabel jLPalavra;
     private javax.swing.JLabel jLPalpite;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLogotipo;
     private javax.swing.JMenu jMAjuda;
     private javax.swing.JMenuItem jMINovoJogo;

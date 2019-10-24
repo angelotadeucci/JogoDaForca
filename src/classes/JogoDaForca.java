@@ -81,7 +81,7 @@ public class JogoDaForca {
                         break;
                     }
                     try {
-                        resultado = resultado.length() < 5 ? null : resultado;
+                        resultado = resultado.length() >= 4 ? resultado : null;
                     } catch (Exception e) {
                         resultado = null;
                     }

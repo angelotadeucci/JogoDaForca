@@ -256,16 +256,17 @@ public class Tela extends javax.swing.JFrame {
         forca.addLetrasUsadas(letra);
         jLLetrasUsadas.setText(forca.getLetrasUsadas());
         if (forca.letraExisteNaPalavra(letra)) {
-            for (int i = 0; i < forca.getPalavra().length(); i++) {
-                if (forca.getPalavra().charAt(i) == letra) {
+            for (int i = 0; i < forca.getPalavraNormalizada().length(); i++) {
+                if (forca.getPalavraNormalizada().charAt(i) == letra) {
                     forca.addPalavra2(i, letra);
                 }
             }
-            String temp2 = imprimePalavra();
-            jLPalavra.setText(temp2);
+            String temp = imprimePalavra();
+            jLPalavra.setText(temp);
             jLPalpite.setText(letra + " (Correto)");
-            if (temp2.matches(forca.getPalavra())) {
+            if (tirarEspacos(temp).matches(forca.getPalavraNormalizada())) {
                 jLogotipo.setEnabled(false);
+                jLPalavra.setText(forca.getPalavraAcentuada());
                 JOptionPane.showMessageDialog(this, "Acertou a palavra!", "Winner winner chicken dinner", 0);
             }
         } else {
@@ -282,7 +283,7 @@ public class Tela extends javax.swing.JFrame {
         if (forca.getErros() == 6) {
             jLogotipo.setEnabled(false);
             jMAjuda.setEnabled(false);
-            JOptionPane.showMessageDialog(this, "Você perdeu!\nA palavra era: " + forca.getPalavra(), "Game over", 0);
+            JOptionPane.showMessageDialog(this, "Você perdeu!\nA palavra era: " + forca.getPalavraAcentuada(), "Game over", 0);
         }
     }//GEN-LAST:event_jLogotipoMouseClicked
 
@@ -304,7 +305,14 @@ public class Tela extends javax.swing.JFrame {
         Random rng = new Random();
         List<String> dicas = forca.getDicas();
         if (dicas.isEmpty()) {
-            jLDicaString.setText("Falha ao prover dicas.");
+            // jLDicaString.setText("Falha ao prover dicas.");
+            String dica = forca.getPalavraAcentuada();
+            for (int i = 0; i < forca.getPalavraAcentuada().length(); i++) {
+                if (dica.charAt(i) != forca.getPalavra2()[i]) {
+                    jLDicaString.setText("próxima letra: " + dica.charAt(i));
+                    forca.setTentativa(-1);
+                }
+            }
         } else {
             int x = rng.nextInt(dicas.size());
             for (int i = 0; i < dicas.size(); i++) {
@@ -387,6 +395,7 @@ public class Tela extends javax.swing.JFrame {
         }
         jLDica.setVisible(false);
         jLDicaString.setVisible(false);
+        jLDicaString.setText(null);
         jLErros.setText("" + (-forca.getErros() + 6));
         jLLetrasUsadas.setText(null);
         jLPalpite.setText(null);
@@ -400,16 +409,26 @@ public class Tela extends javax.swing.JFrame {
         Character[] arrayDaPalavra2 = forca.getPalavra2();
         String temp2 = "";
         for (int i = 0; i < arrayDaPalavra2.length; i++) {
-            if (arrayDaPalavra2[i] == null) {
+            if (arrayDaPalavra2[i] == '_') {
                 temp2 += "_ ";
             } else if (arrayDaPalavra2[i].toString() == " ") {
                 temp2 += "  ";
             } else if (arrayDaPalavra2[i].toString() == "-") {
                 temp2 += "- ";
             } else {
-                temp2 += arrayDaPalavra2[i];
+                temp2 += arrayDaPalavra2[i] + " ";
             }
         }
         return temp2;
+    }
+
+    private String tirarEspacos(String palavra) {
+        String temp = "";
+        for (int i = 0; i < palavra.length(); i++) {
+            if (palavra.charAt(i) != ' ') {
+                temp += palavra.charAt(i);
+            }
+        }
+        return temp;
     }
 }

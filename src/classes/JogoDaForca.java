@@ -14,21 +14,31 @@ import java.util.Random;
  */
 public class JogoDaForca {
 
-    private String palavra;
+    private String palavraNormalizada;
     private Character[] palavra2;
     private int tentativas, erros;
     private List<Character> letrasUsadas;
     private List<String> dicas;
     private ReadHttp httpRequest;
+    private String palavraAcentuada;
 
-    public JogoDaForca() throws NullPointerException{
+    public JogoDaForca() throws NullPointerException {
         this.letrasUsadas = new ArrayList<>();
-        this.palavra = Normalizer.normalize(lerPalavras(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        this.palavraAcentuada = lerPalavras();
+        this.palavraNormalizada = Normalizer.normalize(palavraAcentuada, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         this.tentativas = 0;
         this.erros = 0;
-        this.palavra2 = new Character[(palavra.length())];
+        this.palavra2 = setPalavra2();
         this.httpRequest = new ReadHttp();
         this.dicas = createDicas();
+    }
+
+    public String getPalavraNormalizada() {
+        return palavraNormalizada;
+    }
+
+    public String getPalavraAcentuada() {
+        return palavraAcentuada;
     }
 
     public List<String> getDicas() {
@@ -85,10 +95,6 @@ public class JogoDaForca {
         return resultado;
     }
 
-    public String getPalavra() {
-        return palavra;
-    }
-
     public int getTentativas() {
         return tentativas;
     }
@@ -103,8 +109,8 @@ public class JogoDaForca {
 
     public boolean letraExisteNaPalavra(char x) {
         boolean resultado = false;
-        for (int i = 0; i < palavra.length(); i++) {
-            if (palavra.charAt(i) == x) {
+        for (int i = 0; i < palavraNormalizada.length(); i++) {
+            if (palavraNormalizada.charAt(i) == x) {
                 return true;
             }
         }
@@ -133,6 +139,14 @@ public class JogoDaForca {
     }
 
     private List<String> createDicas() {
-        return httpRequest.failedAtCrawlPage() ? null : httpRequest.crawlPage(palavra);
+        return httpRequest.failedAtCrawlPage() ? null : httpRequest.crawlPage(palavraNormalizada);
+    }
+
+    private Character[] setPalavra2() {
+        Character[] arrayDaPalavra2 = new Character[palavraAcentuada.length()];
+        for (int i = 0; i < arrayDaPalavra2.length; i++) {
+            arrayDaPalavra2[i] = '_';
+        }
+        return arrayDaPalavra2;
     }
 }

@@ -108,14 +108,12 @@ public class JogoDaForca {
     }
 
     public boolean letraExisteNaPalavra(char x) {
-        boolean resultado = false;
         for (int i = 0; i < palavraNormalizada.length(); i++) {
             if (palavraNormalizada.charAt(i) == x) {
                 return true;
             }
         }
-
-        return resultado;
+        return false;
     }
 
     public String getLetrasUsadas() {

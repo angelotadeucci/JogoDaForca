@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
- 
+
 /**
  * @author angel / Simon (MoopleDEV Ragezone?)
  */
@@ -24,7 +24,6 @@ public class ReadHttp {
     public boolean failedAtCrawlPage() {
         return failedAtCrawlPage;
     }
-    
 
     public List<String> crawlPage(String palavra) { //Não criei esse método nem os próximos. Editei para fazer o que eu queria.
         List<String> palavras = new ArrayList<>();
@@ -37,7 +36,7 @@ public class ReadHttp {
             con.setConnectTimeout(10000);
             con.setDoOutput(true);
 
-            try (BufferedReader input = new BufferedReader(new InputStreamReader(con.getInputStream(),"iso-8859-1"))) {
+            try (BufferedReader input = new BufferedReader(new InputStreamReader(con.getInputStream(), "iso-8859-1"))) {
                 Scanner s = new Scanner(input);
                 String temp_data = "";
                 while (s.hasNext()) {

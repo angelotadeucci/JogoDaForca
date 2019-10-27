@@ -308,12 +308,9 @@ public class Tela extends javax.swing.JFrame {
             return;
         }
         Character letra = input.charAt(0);
-        Object[] arraysDeLetras = forca.getArrayLetrasUsadas();
-        for (int i = 0; i < arraysDeLetras.length; i++) {
-            if (arraysDeLetras[i] == letra) {
-                JOptionPane.showMessageDialog(this, "Esta letra já foi usada!", "Erro", 0);
-                return;
-            }
+        if (!forca.addLetrasUsadas(letra)) {
+            JOptionPane.showMessageDialog(this, "Esta letra já foi usada!", "Erro", 0);
+            return;
         }
         forca.addLetrasUsadas(letra);
         jLLetrasUsadas.setText(forca.getLetrasUsadas());

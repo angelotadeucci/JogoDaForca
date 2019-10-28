@@ -970,7 +970,6 @@ justamente
 judicial
 joelho
 jipe
-jazida mineral
 janela
 jorrar
 jóquei
@@ -1013,12 +1012,11 @@ kamikaze
 km2
 kitchenette
 krill
-kung fu
+kung-fu
 kitsch
 kantiano
 kardecista
 km
-keep calm
 kartódromo
 kg
 kelvin
@@ -1258,7 +1256,6 @@ nocivo
 necessidade
 notório
 necessário
-no entanto
 não
 nostalgia
 neófito
@@ -1266,7 +1263,6 @@ negro
 negligência
 neném
 nuance
-não obstante
 nativo
 nevrálgico
 nômade
@@ -1968,7 +1964,6 @@ ultraje
 um
 ufanar
 utensílio
-uma vez que
 ubíquo
 unívoco
 unilateral
@@ -1991,7 +1986,6 @@ urgente
 utópico
 utilizado
 urbano
-unidade federativa
 urdir
 uniforme
 uns
@@ -2166,7 +2160,7 @@ warrantagem
 western
 weber
 wagneriano
-web design
+web-design
 wc
 wu
 whig
@@ -2357,7 +2351,6 @@ zabumba
 zoólogo
 zaragata
 zerar
-zona tropical
 zimbro
 zurro
 zureta

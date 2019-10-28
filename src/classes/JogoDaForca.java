@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * @author angel
+ * @author angel https://github.com/angelotadeucci/JogoDaForca
  */
 public class JogoDaForca {
 
@@ -19,7 +19,6 @@ public class JogoDaForca {
     private int tentativas, erros;
     private List<Character> letrasUsadas;
     private List<String> dicas;
-    private ReadHttp httpRequest;
     private String palavraAcentuada;
 
     public JogoDaForca() throws NullPointerException {
@@ -29,7 +28,6 @@ public class JogoDaForca {
         this.tentativas = 0;
         this.erros = 0;
         this.palavra2 = setPalavra2();
-        this.httpRequest = new ReadHttp();
         this.dicas = createDicas();
     }
 
@@ -67,32 +65,24 @@ public class JogoDaForca {
 
     private String lerPalavras() throws NullPointerException {
         String fileName = "palavras.txt";
-        String resultado = null;
+        List<String> palavras = new ArrayList<>();
         Random random = new Random();
         int rng = random.nextInt(2396);
         try {
             FileReader fileReader = new FileReader(fileName);
             try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-                do {
-                    for (int i = 0; i < rng; i++) {
-                        resultado = bufferedReader.readLine();
-                    }
-                    if (resultado == null) {
-                        break;
-                    }
-                    try {
-                        resultado = resultado.length() >= 4 ? resultado : null;
-                    } catch (Exception e) {
-                        resultado = null;
-                    }
-                } while (resultado == null);
+                String line = null;
+                while ((line = bufferedReader.readLine()) != null) {
+                    palavras.add(line);
+                }
+                bufferedReader.close();
             }
         } catch (FileNotFoundException e) {
             System.out.println("Arquivo não existe '" + fileName + "'");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return resultado;
+        return palavras.get(rng);
     }
 
     public int getTentativas() {
@@ -119,13 +109,9 @@ public class JogoDaForca {
     public String getLetrasUsadas() {
         StringBuilder reString = new StringBuilder();
         for (int i = 0; i < letrasUsadas.size(); i++) {
-            reString.append(letrasUsadas.toArray()[i]).append(" - ");
+            reString.append(letrasUsadas.get(i)).append(" - ");
         }
         return reString.toString();
-    }
-
-    public Object[] getArrayLetrasUsadas() {
-        return letrasUsadas.toArray();
     }
 
     public boolean addLetrasUsadas(Character letra) {
@@ -137,13 +123,17 @@ public class JogoDaForca {
     }
 
     private List<String> createDicas() {
-        return httpRequest.failedAtCrawlPage() ? null : httpRequest.crawlPage(palavraNormalizada);
+        return ReadHttp.failedAtCrawlPage() ? null : ReadHttp.crawlPage(palavraNormalizada);
     }
 
     private Character[] setPalavra2() {
         Character[] arrayDaPalavra2 = new Character[palavraAcentuada.length()];
         for (int i = 0; i < arrayDaPalavra2.length; i++) {
-            arrayDaPalavra2[i] = '_';
+            if (palavraNormalizada.charAt(i) == '-') {
+                arrayDaPalavra2[i] = '-';
+            } else {
+                arrayDaPalavra2[i] = '_';
+            }
         }
         return arrayDaPalavra2;
     }

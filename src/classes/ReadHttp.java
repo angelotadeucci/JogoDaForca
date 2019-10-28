@@ -8,24 +8,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * @author angel / Simon (MoopleDEV Ragezone?)
  */
 public class ReadHttp {
 
-    public boolean failedAtCrawlPage;
+    private static boolean failedAtCrawlPage = false;
 
     public ReadHttp() {
-        this.failedAtCrawlPage = false;
     }
 
-    public boolean failedAtCrawlPage() {
+    public static boolean failedAtCrawlPage() {
         return failedAtCrawlPage;
     }
 
-    public List<String> crawlPage(String palavra) { //Não criei esse método nem os próximos. Editei para fazer o que eu queria.
+    public static List<String> crawlPage(String palavra) { //Não criei esse método nem os próximos. Editei para fazer o que eu queria.
         List<String> palavras = new ArrayList<>();
         long timeToTake = System.currentTimeMillis();
         try {
@@ -37,12 +35,12 @@ public class ReadHttp {
             con.setDoOutput(true);
 
             try (BufferedReader input = new BufferedReader(new InputStreamReader(con.getInputStream(), "iso-8859-1"))) {
-                Scanner s = new Scanner(input);
                 String temp_data = "";
-                while (s.hasNext()) {
-                    temp_data += s.nextLine() + "\n";
+                String line = null;
+                while ((line = input.readLine()) != null) {
+                    temp_data += input.readLine() + "\n";
                 }
-                s.close();
+                input.close();
                 while (temp_data.contains("class=\"sinonimo\">")) {
                     String texto = getStringBetween(temp_data, "class=\"sinonimo\">", "</a>");
                     temp_data = trimUntil(temp_data, "</a>");
@@ -66,12 +64,12 @@ public class ReadHttp {
         return palavras;
     }
 
-    public String getStringBetween(String line, String start, String end) { //Não editado
+    public static String getStringBetween(String line, String start, String end) { //Não editado
         int start_offset = line.indexOf(start) + start.length();
         return line.substring(start_offset, line.substring(start_offset).indexOf(end) + start_offset);
     }
 
-    public String trimUntil(String line, String until) { // Não editado
+    public static String trimUntil(String line, String until) { // Não editado
         int until_pos = line.indexOf(until);
         if (until_pos == -1) {
             return null;

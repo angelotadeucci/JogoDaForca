@@ -326,7 +326,7 @@ public class Tela extends javax.swing.JFrame {
             if (tirarEspacos(temp).matches(forca.getPalavraNormalizada())) {
                 jLogotipo.setEnabled(false);
                 jLPalavra.setText(forca.getPalavraAcentuada());
-                JOptionPane.showMessageDialog(this, "Acertou a palavra!", "Winner winner chicken dinner", 0);
+                JOptionPane.showMessageDialog(this, "Acertou a palavra!", "Winner Winner Chicken Dinner", 0);
             }
         } else {
             forca.addErro();
@@ -459,14 +459,7 @@ public class Tela extends javax.swing.JFrame {
     //</editor-fold>
     private void novoJogo() {
         Icon icon = new ImageIcon(getClass().getClassLoader().getResource("imagens/forca.jpg"));
-        for (int i = 0; i < 10;) {
-            try {
-                forca = new JogoDaForca();
-                break;
-            } catch (NullPointerException ex) {
-                i++;
-            }
-        }
+        forca = new JogoDaForca();
         jLDica.setVisible(false);
         jLDicaString.setVisible(false);
         jLDicaString.setText(null);
@@ -482,16 +475,8 @@ public class Tela extends javax.swing.JFrame {
     private String imprimePalavra() {
         Character[] arrayDaPalavra2 = forca.getPalavra2();
         String temp2 = "";
-        for (int i = 0; i < arrayDaPalavra2.length; i++) {
-            if (arrayDaPalavra2[i] == '_') {
-                temp2 += "_ ";
-            } else if (arrayDaPalavra2[i].toString() == " ") {
-                temp2 += "  ";
-            } else if (arrayDaPalavra2[i].toString() == "-") {
-                temp2 += "- ";
-            } else {
-                temp2 += arrayDaPalavra2[i] + " ";
-            }
+        for (Character arrayDaPalavra21 : arrayDaPalavra2) {
+            temp2 += arrayDaPalavra21 + " ";
         }
         return temp2;
     }

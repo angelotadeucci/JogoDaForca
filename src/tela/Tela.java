@@ -155,7 +155,7 @@ public class Tela extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(255, 0, 0))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informações", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 0, 0))); // NOI18N
 
         jLabel2.setText("Palavra:");
 
@@ -303,6 +303,10 @@ public class Tela extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Digite alguma letra!", "Aviso", 1);
             return;
         }
+        if (Character.isDigit(input.charAt(0))) {
+            JOptionPane.showMessageDialog(this, "Digite somente letras!", "Aviso", 1);
+            return;
+        }
         if (input.length() > 1) {
             JOptionPane.showMessageDialog(this, "Digite somente uma letra!", "Aviso", 1);
             return;
@@ -317,7 +321,7 @@ public class Tela extends javax.swing.JFrame {
         if (forca.letraExisteNaPalavra(letra)) {
             for (int i = 0; i < forca.getPalavraNormalizada().length(); i++) {
                 if (forca.getPalavraNormalizada().charAt(i) == letra) {
-                    forca.addPalavra2(i, letra);
+                    forca.addLetraNaPalavraCodificada(i, letra);
                 }
             }
             String temp = imprimePalavra();
@@ -373,7 +377,6 @@ public class Tela extends javax.swing.JFrame {
             for (int i = 0; i < forca.getPalavraAcentuada().length(); i++) {
                 if (dica.charAt(i) != forca.getPalavra2()[i]) {
                     jLDicaString.setText("próxima letra: " + dica.charAt(i));
-                    forca.setTentativa(-1);
                 }
             }
         } else {

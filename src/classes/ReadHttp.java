@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * @author angel / Simon (MoopleDEV Ragezone?)
@@ -33,14 +34,13 @@ public class ReadHttp {
             con.setReadTimeout(10000);
             con.setConnectTimeout(10000);
             con.setDoOutput(true);
-
             try (BufferedReader input = new BufferedReader(new InputStreamReader(con.getInputStream(), "iso-8859-1"))) {
+                Scanner s = new Scanner(input);
                 String temp_data = "";
-                String line = null;
-                while ((line = input.readLine()) != null) {
-                    temp_data += input.readLine() + "\n";
+                while (s.hasNext()) {
+                    temp_data += s.nextLine() + "\n";
                 }
-                input.close();
+                s.close();
                 while (temp_data.contains("class=\"sinonimo\">")) {
                     String texto = getStringBetween(temp_data, "class=\"sinonimo\">", "</a>");
                     temp_data = trimUntil(temp_data, "</a>");

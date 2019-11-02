@@ -15,19 +15,19 @@ import java.util.Random;
 public class JogoDaForca {
 
     private String palavraNormalizada;
-    private Character[] palavra2;
+    private Character[] palavraCodificada;
     private int tentativas, erros;
     private List<Character> letrasUsadas;
     private List<String> dicas;
     private String palavraAcentuada;
 
-    public JogoDaForca() throws NullPointerException {
+    public JogoDaForca() {
         this.letrasUsadas = new ArrayList<>();
-        this.palavraAcentuada = lerPalavras();
+        this.palavraAcentuada = lerPalavras().toLowerCase();
         this.palavraNormalizada = Normalizer.normalize(palavraAcentuada, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
         this.tentativas = 0;
         this.erros = 0;
-        this.palavra2 = setPalavra2();
+        this.palavraCodificada = setPalavraCodificada();
         this.dicas = createDicas();
     }
 
@@ -56,18 +56,20 @@ public class JogoDaForca {
     }
 
     public Character[] getPalavra2() {
-        return palavra2;
+        return palavraCodificada;
     }
 
-    public void addPalavra2(int pos, char letra) {
-        palavra2[pos] = letra;
+    public void addLetraNaPalavraCodificada(int pos, char letra) {
+        palavraCodificada[pos] = letra;
     }
-
-    private String lerPalavras() throws NullPointerException {
+    //nao sortear palavras repetidas
+    //adcionar teclado na tela
+    //dica somente depois de erros
+    //List de Palavra
+    private String lerPalavras() {//adcionar palavras e dicas
         String fileName = "palavras.txt";
-        List<String> palavras = new ArrayList<>();
+        List<String> palavras = new ArrayList<>();//tirar do metodo
         Random random = new Random();
-        int rng = random.nextInt(2396);
         try {
             FileReader fileReader = new FileReader(fileName);
             try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
@@ -82,6 +84,7 @@ public class JogoDaForca {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        int rng = random.nextInt(palavras.size());
         return palavras.get(rng);
     }
 
@@ -126,7 +129,7 @@ public class JogoDaForca {
         return ReadHttp.failedAtCrawlPage() ? null : ReadHttp.crawlPage(palavraNormalizada);
     }
 
-    private Character[] setPalavra2() {
+    private Character[] setPalavraCodificada() {
         Character[] arrayDaPalavra2 = new Character[palavraAcentuada.length()];
         for (int i = 0; i < arrayDaPalavra2.length; i++) {
             if (palavraNormalizada.charAt(i) == '-') {

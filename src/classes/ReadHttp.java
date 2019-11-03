@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class ReadHttp {
 
     private static boolean failedAtCrawlPage = false;
+    private static List<String> palavras = new ArrayList<>();
 
     public ReadHttp() {
     }
@@ -24,8 +25,7 @@ public class ReadHttp {
         return failedAtCrawlPage;
     }
 
-    public static List<String> crawlPage(String palavra) { //Não criei esse método nem os próximos. Editei para fazer o que eu queria.
-        List<String> palavras = new ArrayList<>();
+    public static void crawlPage(String palavra) { //Não criei esse método nem os próximos. Editei para fazer o que eu queria.
         long timeToTake = System.currentTimeMillis();
         try {
             URL url = new URL("https://www.sinonimos.com.br/" + palavra);
@@ -44,7 +44,7 @@ public class ReadHttp {
                 while (temp_data.contains("class=\"sinonimo\">")) {
                     String texto = getStringBetween(temp_data, "class=\"sinonimo\">", "</a>");
                     temp_data = trimUntil(temp_data, "</a>");
-                    if (!palavras.contains(texto)) {
+                    if (!palavras.contains(texto) && texto.length()>4) {
                         palavras.add(texto);
                     }
                 }
@@ -58,9 +58,10 @@ public class ReadHttp {
             System.out.println("Error reading from URL: " + ioe.getLocalizedMessage());
             failedAtCrawlPage = true;
         }
-
         System.out.println("Dicas carregadas " + (failedAtCrawlPage ? "sem sucesso" : "com sucesso") + " em " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " segundos");
+    }
 
+    public static List<String> getPalavras() {
         return palavras;
     }
 

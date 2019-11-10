@@ -164,8 +164,8 @@ public class JogoDaForca {
         }
         int x = rng.nextInt(palavra.size());
         while (palavrasUsadas.contains(palavra.get(x).getPalavra())) {
-            if (containsAllWords()) {
-
+            if (palavrasUsadas.containsAll(palavra)) {
+                palavrasUsadas.clear();
                 break;
             }
             x = rng.nextInt(palavra.size());
@@ -225,6 +225,7 @@ public class JogoDaForca {
 
     public class NewThread extends Thread {
 
+        @Override
         public void run() {
             System.out.println("Criando dicas");
             dicas = criarDicas();

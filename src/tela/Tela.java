@@ -929,7 +929,7 @@ public class Tela extends javax.swing.JFrame {
             forca.iniciarJogoCom2000Palavras();
             jMAjuda.setVisible(true);
             JMIAjuda.setVisible(true);
-            JMIAjuda.setEnabled(false);
+            JMIAjuda.setEnabled(true);
         } else {
             forca.iniciarJogoCom10Palavras();
             jMAjuda.setVisible(false);
